@@ -1,0 +1,349 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AgroPredict | Crop Yield Prediction</title>
+
+    <link rel="stylesheet"
+          href="{% static 'prediction/style.css' %}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🌾 AgroPredict
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="/predict/">Prediction</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- ================= PREDICTION PAGE ================= -->
+
+    <main class="prediction-page">
+
+
+        <div class="prediction-container">
+
+
+            <h1>
+                🌾 Crop Yield Prediction
+            </h1>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- Crop -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Crop
+                        </label>
+
+                        <select name="crop" required>
+
+                            <option value="">
+                                Select Crop
+                            </option>
+
+                            {% for crop in crops %}
+
+                                <option
+                                    value="{{ crop }}"
+                                    {% if selected_crop == crop %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ crop }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Crop Year -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Crop Year
+                        </label>
+
+                        <input
+                            type="number"
+                            name="crop_year"
+                            value="{{ selected_year }}"
+                            placeholder="Example: 2020"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- Season -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Season
+                        </label>
+
+                        <select name="season" required>
+
+                            <option value="">
+                                Select Season
+                            </option>
+
+                            {% for season in seasons %}
+
+                                <option
+                                    value="{{ season }}"
+                                    {% if selected_season == season %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ season }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- State -->
+
+                    <div class="form-group">
+
+                        <label>
+                            State
+                        </label>
+
+                        <select name="state" required>
+
+                            <option value="">
+                                Select State
+                            </option>
+
+                            {% for state in states %}
+
+                                <option
+                                    value="{{ state }}"
+                                    {% if selected_state == state %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ state }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Area -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Area
+                        </label>
+
+                        <input
+                            type="number"
+                            name="area"
+                            step="any"
+                            value="{{ selected_area }}"
+                            placeholder="Enter area"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- Annual Rainfall -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Annual Rainfall
+                        </label>
+
+                        <input
+                            type="number"
+                            name="annual_rainfall"
+                            step="any"
+                            value="{{ selected_rainfall }}"
+                            placeholder="Enter rainfall"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- Fertilizer -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Fertilizer
+                        </label>
+
+                        <input
+                            type="number"
+                            name="fertilizer"
+                            step="any"
+                            value="{{ selected_fertilizer }}"
+                            placeholder="Enter fertilizer"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- Pesticide -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Pesticide
+                        </label>
+
+                        <input
+                            type="number"
+                            name="pesticide"
+                            step="any"
+                            value="{{ selected_pesticide }}"
+                            placeholder="Enter pesticide"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Predict Button -->
+
+                <button
+                    type="submit"
+                    class="predict-btn"
+                >
+
+                    🔮 Predict Crop Yield
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- ================= RESULT ================= -->
+
+            {% if prediction is not None %}
+
+                <div class="result-card">
+
+                    <h2>
+                        🌾 Prediction Result
+                    </h2>
+
+                    <p>
+                        Estimated Crop Yield
+                    </p>
+
+
+                    <div class="result-value">
+
+                        {{ prediction|floatformat:2 }}
+
+                    </div>
+
+
+                    <p>
+                        units per hectare
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 AgroPredict
+            | AI Based Crop Yield Prediction System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
